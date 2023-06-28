@@ -39,6 +39,7 @@ body {
 }
 
 .header_btn {
-  float: right;
   right: 50px;
+  position: relative;
+  float: right;
 }
