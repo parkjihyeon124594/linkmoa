@@ -1,0 +1,44 @@
+body {
+  background-color: aliceblue;
+}
+.logo {
+  display: flex;
+  height: 100%;
+  flex: 1;
+}
+
+.logo_image {
+  top: 0px;
+  width: 35x;
+  height: 35px;
+  align-self: center;
+}
+.logo_name {
+  top: 0px;
+  width: 150px;
+  height: 50px;
+  align-self: center;
+}
+
+.header_banner {
+  max-width: 100%;
+  width: 150vw;
+  background-color: white;
+}
+.header_menu {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.header_btn {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  flex-direction: row;
+  right: 50px;
+}
