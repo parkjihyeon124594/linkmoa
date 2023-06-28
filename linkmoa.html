@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <meta charset="utf-8" />
     <title>Linkmoa</title>
     <link rel="stylesheet" href="./linkmoastyle.css" />
     <script src="script.js" defer></script>
@@ -10,14 +9,26 @@
     <div class="header_banner">
       <nav class="header_menu">
         <div class="logo">
-          <a href="https://www.naver.com">
-            <img class="logo_image" src="./logo_image.png" />
-          </a>
+          <div>
+            <a href="https://www.naver.com">
+              <img class="logo_image" src="./logo_image.png" />
+            </a>
+          </div>
           <div>
             <img class="logo_name" src="./logo_name.png" />
           </div>
         </div>
-        <div class="header_btn"></div>
+
+        <div class="header_btn">
+          <button
+            id="registeration_btn"
+            style="margin: 10px"
+            onclick="registeration_page()"
+          >
+            회원가입
+          </button>
+          <button id="login_btn" onclick="login_page()">로그인</button>
+        </div>
       </nav>
     </div>
 
