@@ -3,9 +3,10 @@
   <head>
     <title>Linkmoa</title>
     <link rel="stylesheet" href="./linkmoastyle.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <header class="header_banner">
+    <div class="header_banner">
       <nav class="header_menu">
         <div class="logo">
           <div>
@@ -19,11 +20,17 @@
         </div>
 
         <div class="header_btn">
-          <button id="makeId_btn">회원가입</button>
-          <button id="login_btn">로그인</button>
+          <button
+            id="registeration_btn"
+            style="margin: 10px"
+            onclick="registeration_page()"
+          >
+            회원가입
+          </button>
+          <button id="login_btn" onclick="login_page()">로그인</button>
         </div>
       </nav>
-    </header>
+    </div>
 
     <hr />
     <div>hello</div>

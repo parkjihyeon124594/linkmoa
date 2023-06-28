@@ -5,19 +5,18 @@ body {
   display: flex;
   height: 100%;
   flex: 1;
+  align-items: center;
 }
 
 .logo_image {
-  top: 0px;
-  width: 35x;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   align-self: center;
 }
 .logo_name {
-  top: 0px;
   width: 150px;
-  height: 50px;
-  align-self: center;
+  height: 60px;
+  vertical-align: middle;
 }
 
 .header_banner {
@@ -35,10 +34,9 @@ body {
 }
 
 .header_btn {
-  display: flex;
-  width: 100%;
-  height: 100%;
   align-items: center;
   flex-direction: row;
   right: 50px;
+  position: relative;
+  float: right;
 }
