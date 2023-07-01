@@ -2,6 +2,7 @@
 <html lang="ko">
   <head>
     <title>Linkmoa</title>
+    <meta charset="utf-8" />
     <link rel="stylesheet" href="./linkmoastyle.css" />
     <script src="script.js" defer></script>
   </head>
@@ -11,7 +12,7 @@
         <div class="logo">
           <div>
             <a href="https://www.naver.com">
-              <img class="logo_image" src="./logo_image.png" />
+              <img class="logo_image" src="./logo_image3.png" />
             </a>
           </div>
           <div>
@@ -22,12 +23,23 @@
         <div class="header_btn">
           <button
             id="registeration_btn"
-            style="margin: 10px"
+            style="margin-right: 5px"
             onclick="registeration_page()"
           >
             회원가입
           </button>
           <button id="login_btn" onclick="login_page()">로그인</button>
+        </div>
+        <div class="header_btn">
+          <input
+            type="image"
+            name="button"
+            src="./menu2.png"
+            width="30px"
+            height="30px"
+            style="margin-left: 10px"
+            onclick="registeration_page()"
+          />
         </div>
       </nav>
     </div>

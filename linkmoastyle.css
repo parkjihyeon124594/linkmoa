@@ -9,13 +9,14 @@ body {
 }
 
 .logo_image {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   align-self: center;
+  margin-left: 10px;
 }
 .logo_name {
   width: 150px;
-  height: 60px;
+  height: 65px;
   vertical-align: middle;
 }
 
@@ -36,7 +37,13 @@ body {
 .header_btn {
   align-items: center;
   flex-direction: row;
-  right: 50px;
+  right: 10px;
   position: relative;
+  justify-content: center;
   float: right;
+}
+.menu_btn {
+  width: 45px;
+  height: 45px;
+  vertical-align: middle;
 }
