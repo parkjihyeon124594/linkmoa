@@ -1,15 +1,77 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <title>login</title>
+    <title>Linkmoa</title>
+    <meta charset="utf-8" />
     <link rel="stylesheet" href="./loginstyle.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <header class="login_banner">login</header>
-    <div class="id_pw">
-      <form>ID : <input type="text" /></form>
-      <br />
-      <form>PW : <input type="password" /></form>
+    <div class="header_banner">
+      <nav class="header_menu">
+        <div class="logo">
+          <div>
+            <a href="https://www.naver.com">
+              <img class="logo_image" src="./logo_image3.png" />
+            </a>
+          </div>
+          <div>
+            <img class="logo_name" src="./logo_name.png" />
+          </div>
+        </div>
+
+        <div class="header_btn">
+          <button
+            id="registeration_btn"
+            style="margin-right: 5px"
+            onclick="registeration_page()"
+          >
+            회원가입
+          </button>
+          <button id="login_btn" onclick="login_page()">로그인</button>
+        </div>
+        <div class="header_btn">
+          <input
+            type="image"
+            name="button"
+            src="./menu2.png"
+            width="30px"
+            height="30px"
+            style="margin-left: 10px"
+            onclick="registeration_page()"
+          />
+        </div>
+      </nav>
     </div>
+
+    <hr />
+
+    <main id="login">
+      <div class="login-box">
+        <h1 id="login-header">Login</h1>
+
+        <form id="login-form">
+          <div id="form">
+            <input
+              type="text"
+              name="username"
+              id="username-field"
+              class="login-form-field"
+              placeholder="ID"
+            />
+          </div>
+          <div id="form">
+            <input
+              type="password"
+              name="password"
+              id="password-field"
+              class="login-form-field"
+              placeholder="Password"
+            />
+          </div>
+          <input type="submit" value="Login" id="login-form-submit" />
+        </form>
+      </div>
+    </main>
   </body>
 </html>
