@@ -7,7 +7,7 @@ function login_page() {
 function registeration_page() {
   window.location.href = "registeration.html";
 }
-
+//sort_button 부분
 const nonClick = document.querySelectorAll(".non-click");
 function handleClick(event) {
   nonClick.forEach((e) => {
@@ -19,7 +19,10 @@ nonClick.forEach((e) => {
   e.addEventListener("click", handleClick);
 });
 
+//new directory 만들기
 const createDir = function () {
   const newDir = document.createElement("button");
+  newDir.classList.add("directory-button");
+
   directory.appendChild(newDir);
 };
