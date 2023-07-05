@@ -20,8 +20,6 @@ nonClick.forEach((e) => {
   e.addEventListener("click", handleClick);
 });
 
-//new directory 만들기
-
 function openMenubar() {
   if (document.getElementById("menubars").style.display === "block") {
     document.getElementById("menubars").style.display = "none";

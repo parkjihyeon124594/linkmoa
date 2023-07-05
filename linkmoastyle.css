@@ -53,10 +53,9 @@ body {
   width: 400px;
   padding: 50px 50px 50px 50px;
 }
-
-.dir_or_link {
+#link_container button {
   background-color: white;
-  border: 2px dotted yellowgreen;
+  border: 2px dotted black;
   border-radius: 5px;
   padding: 100px 100px;
   display: inline-block;
@@ -64,13 +63,6 @@ body {
   text-decoration: none;
   font-size: 16px;
   color: black;
-}
-.dir_or_link::before {
-  content: "파일";
-}
-.dir_or_link:active {
-  border: 2px solid gray;
-  background-color: rgb(218, 217, 217);
 }
 
 #add_btn {
@@ -83,10 +75,55 @@ body {
   font-size: 16px;
   color: black;
 }
-#add_btn::before {
-  content: "+";
-}
+
 #add_btn:active {
   border: 2px solid gray;
   background-color: rgb(218, 217, 217);
+}
+
+#sort_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#sort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(232, 228, 228);
+  width: 110px;
+  height: 25px;
+  border-radius: 6px;
+  border: 1px solid gray;
+}
+.sort_opt {
+  width: 46%;
+  height: 85%;
+  border-radius: 6px;
+  border: 0px;
+}
+
+.non-click {
+  background-color: rgb(232, 228, 228);
+}
+.click {
+  background-color: white;
+  border: 1px solid gray;
+}
+.directory-button {
+  border: none;
+  background: url("./folder.png") no-repeat center;
+  background-size: 80%; /* 이미지 크기를 50%로 축소 */
+  /* 추가적인 스타일링을 원하는 경우 여기에 작성합니다 */
+  border: none;
+  background-color: transparent;
+  padding: 50px;
+}
+.directory {
+  justify-content: space-around;
+}
+
+#menubars {
+  display: none;
+  position: absolute;
 }
