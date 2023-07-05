@@ -53,17 +53,6 @@ body {
   width: 400px;
   padding: 50px 50px 50px 50px;
 }
-#link_container button {
-  background-color: white;
-  border: 2px dotted black;
-  border-radius: 5px;
-  padding: 100px 100px;
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  color: black;
-}
 
 #add_btn {
   background-color: white;
@@ -74,6 +63,7 @@ body {
   text-decoration: none;
   font-size: 16px;
   color: black;
+  padding: 100px;
 }
 
 #add_btn:active {
@@ -126,4 +116,20 @@ body {
 #menubars {
   display: none;
   position: absolute;
+  list-style-type: none;
+  margin-left: 60px;
+}
+#more_img {
+  height: 30px;
+  width: 30px;
+}
+.menubars_li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(232, 228, 228);
+  width: 110px;
+  height: 25px;
+  border-radius: 6px;
+  border: 1px solid gray;
 }
