@@ -64,6 +64,7 @@ body {
   text-decoration: none;
   font-size: 16px;
   color: black;
+  padding: 100px;
 }
 
 #add_btn:active {
@@ -116,4 +117,20 @@ body {
 #menubars {
   display: none;
   position: absolute;
+  list-style-type: none;
+  margin-left: 60px;
+}
+#more_img {
+  height: 30px;
+  width: 30px;
+}
+.menubars_li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(232, 228, 228);
+  width: 110px;
+  height: 25px;
+  border-radius: 6px;
+  border: 1px solid gray;
 }

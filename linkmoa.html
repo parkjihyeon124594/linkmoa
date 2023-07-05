@@ -45,10 +45,16 @@
     </div>
     <hr />
     <span id="link_container">
+<<<<<<< HEAD
       <button id="add_btn" onclick="openMenubar()">+</button>
+=======
+      <button id="add_btn" onclick="openMenubar()">
+        <img src ="more.png" alt="plus" id = "more_img"></button>
+      </button>
+>>>>>>> a44f3e3f8e681838dce95ac2f87cf1adbe9b459d
       <ul id="menubars">
-        <li><button id="make_dir">폴더 생성</button></li>
-        <li><button id="make_link">링크 생성</button></li>
+        <li><button class="menubars_li" id = "make_dir" onclick="createDir()">폴더 생성</button></li>
+        <li><button class="menubars_li" id = "make_link">링크 생성</button></li>
       </ul>
     </span>
   </body>
