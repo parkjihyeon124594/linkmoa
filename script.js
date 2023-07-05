@@ -20,11 +20,10 @@ nonClick.forEach((e) => {
   e.addEventListener("click", handleClick);
 });
 
-//new directory 만들기
-
-const createDir = function () {
-  const newDir = document.createElement("button");
-  newDir.classList.add("directory-button");
-
-  directory.appendChild(newDir);
-};
+function openMenubar() {
+  if (document.getElementById("menubars").style.display === "block") {
+    document.getElementById("menubars").style.display = "none";
+  } else {
+    document.getElementById("menubars").style.display = "block";
+  }
+}
