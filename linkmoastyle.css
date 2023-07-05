@@ -77,7 +77,6 @@ body {
   background-color: white;
   border: 2px dotted black;
   border-radius: 5px;
-  padding: 100px 100px;
   display: inline-block;
   text-align: center;
   text-decoration: none;
@@ -90,9 +89,4 @@ body {
 #add_btn:active {
   border: 2px solid gray;
   background-color: rgb(218, 217, 217);
-}
-
-#menubars {
-  display: none;
-  position: absolute;
 }
