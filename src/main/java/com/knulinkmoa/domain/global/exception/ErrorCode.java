@@ -1,4 +1,4 @@
-package com.knulinkmoa.global.exception;
+package com.knulinkmoa.domain.global.exception;
 
 import org.springframework.http.HttpStatus;
 

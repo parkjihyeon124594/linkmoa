@@ -2,7 +2,6 @@ package com.knulinkmoa.domain.site.entity;
 
 import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequset;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,27 +29,27 @@ public class Site {
     @Column(name = "url")
     private String url;
 
-    @Column(name="site_name")
-    private String name;
+    @Column(name= "site_name")
+    private String siteName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "directory_id")
     private Directory directory;
 
     @Builder
-    public Site(Long id,String url,String name,Directory directory){
-        this.id=id;
+    public Site(Long id, String url, String siteName, Directory directory) {
+        this.id = id;
         this.url = url;
-        this.name=name;
-        this.directory=directory;
-
+        this.siteName = siteName;
+        this.directory = directory;
     }
+
     //public record SiteSaveRequest(String url,String name, Directory directory)
     public void update(SiteUpdateRequset requset){
         if(requset.url() !=null)
             this.url=requset.url();
         if(requset.name() !=null)
-            this.name=requset.name();
+            this.siteName =requset.name();
         // 여기서 추가: SiteUpdateRequest에서 받아온 Directory 정보로 업데이트
         if(requset.directory() != null) {
             this.directory = requset.directory();

@@ -13,12 +13,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Directory {
 
@@ -35,7 +38,16 @@ public class Directory {
     @Column(name = "parent_id")
     private Long parentId;
 
+/*
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member member;*/
+
+    @Builder
+    public Directory(Long id, String directoryName, List<Site> siteList, Long parentId) {
+        this.id = id;
+        this.directoryName = directoryName;
+        this.siteList = siteList;
+        this.parentId = parentId;
+    }
 }

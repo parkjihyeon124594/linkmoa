@@ -1,19 +1,18 @@
-package com.knulinkmoa.domain.site.exception;
+package com.knulinkmoa.domain.directory.exception;
 
 import com.knulinkmoa.domain.global.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
-public enum SiteErrorCode implements ErrorCode {
+public enum DirectoryErrorCode implements ErrorCode {
 
-    SITE_NOT_FOUND(HttpStatus.NOT_FOUND,"Noneexistent site");
+    DIRECTORY_NOT_FOUND(HttpStatus.NOT_FOUND,"NoneExistent directory");
     private final HttpStatus status;
     private final String message;
 
-    SiteErrorCode(HttpStatus status, String message) {
+    DirectoryErrorCode(HttpStatus status, String message) {
         this.status = status;
         this.message = message;
     }
-
 
     @Override
     public HttpStatus status() {

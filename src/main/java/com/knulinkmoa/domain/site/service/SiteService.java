@@ -1,19 +1,16 @@
 package com.knulinkmoa.domain.site.service;
 
 
-import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.site.dto.request.SiteSaveRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequset;
 import com.knulinkmoa.domain.site.dto.response.SiteReadResponse;
 import com.knulinkmoa.domain.site.entity.Site;
 import com.knulinkmoa.domain.site.exception.SiteErrorCode;
 import com.knulinkmoa.domain.site.repository.SiteRepository;
-import com.knulinkmoa.global.exception.GlobalException;
+import com.knulinkmoa.domain.global.exception.GlobalException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class SiteService {
         Site site = Site.builder()
                 .id(request.id())
                 .url(request.url())
-                .name(request.name())
+                .siteName(request.name())
                 .directory(request.directory())
                 .build();
         siteRepository.save(site);
@@ -48,7 +45,7 @@ public class SiteService {
 
         return SiteReadResponse.builder()
                 .id(site.getId())
-                .name(site.getName())
+                .name(site.getSiteName())
                 .directory(site.getDirectory())
                 .build();
     }
