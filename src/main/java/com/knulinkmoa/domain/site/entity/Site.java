@@ -1,7 +1,7 @@
 package com.knulinkmoa.domain.site.entity;
 
+import com.knulinkmoa.domain.directory.dto.request.UpdateRequest;
 import com.knulinkmoa.domain.directory.entity.Directory;
-import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequset;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,18 +44,13 @@ public class Site {
         this.directory = directory;
     }
 
-    //public record SiteSaveRequest(String url,String name, Directory directory)
-    public void update(SiteUpdateRequset requset){
-        if(requset.url() !=null)
-            this.url=requset.url();
-        if(requset.name() !=null)
-            this.siteName =requset.name();
-        // 여기서 추가: SiteUpdateRequest에서 받아온 Directory 정보로 업데이트
-        if(requset.directory() != null) {
-            this.directory = requset.directory();
+    public void update(UpdateRequest request){
+        if (request.name() != null) {
+            this.siteName = request.name();
         }
-        else if (requset.directory() == null){
-            log.info("최상위 경로 - 테스트(추후 삭제) ");
+
+        if (request.url() != null) {
+            this.url = request.url();
         }
     }
 }
