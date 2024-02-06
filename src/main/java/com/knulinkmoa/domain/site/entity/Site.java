@@ -1,6 +1,9 @@
 package com.knulinkmoa.domain.site.entity;
 
 import com.knulinkmoa.domain.directory.entity.Directory;
+
+import com.knulinkmoa.domain.member.entity.Member;
+import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,16 +34,41 @@ public class Site {
     @Column(name= "site_name")
     private String siteName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity=Directory.class)
     @JoinColumn(name = "directory_id")
     private Directory directory;
 
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Member.class)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+
+/*  멤버 추가
+ @Builder
+    public Site(Long id, String url, String siteName, Directory directory,Member member) {
+        this.id = id;
+        this.url = url;
+        this.siteName = siteName;
+        this.directory = directory;
+        this.member=member;
+    }
+*/
     @Builder
     public Site(Long id, String url, String siteName, Directory directory) {
         this.id = id;
         this.url = url;
         this.siteName = siteName;
         this.directory = directory;
+    }
+
+    public void update(SiteUpdateRequest request){
+        if (request.name() != null) {
+            this.siteName = request.name();
+        }
+
+        if (request.url() != null) {
+            this.url = request.url();
+        }
     }
 
 }

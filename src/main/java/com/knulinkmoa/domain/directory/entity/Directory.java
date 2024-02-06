@@ -57,5 +57,8 @@ public class Directory {
         if (request.directoryName() != null) {
             this.directoryName = directoryName;
         }
+
     }
+
+
 }
