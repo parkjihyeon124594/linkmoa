@@ -111,16 +111,6 @@ public class DirectoryService {
      * @param request
      * @return
      */
-    @Transactional
-    public Long updateSite(UpdateRequest request) {
-
-        Site site = siteRepository.findById(request.siteId())
-                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
-
-        site.update(request);
-
-        return site.getId();
-    }
 
     /**
      * 디렉토리 삭제하기

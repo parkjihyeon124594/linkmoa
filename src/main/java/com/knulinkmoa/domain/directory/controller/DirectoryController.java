@@ -59,22 +59,8 @@ public class DirectoryController {
     /**
      * UPDATE
      */
-    @PutMapping("/{directoryId}")
-    public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> updateDirectory(
-            @RequestBody UpdateRequest request,
-            @PathVariable("directoryId") Long id
-    ) {
 
-        if ("directory".equals(request.type())) {
-            Long updateDirectoryId = directoryService.updateDirectory(request, id);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, updateDirectoryId));
-        } else if ("site".equals(request.type())) {
-            Long updateSiteId = directoryService.updateSite(request);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, id));
-        } else {
-            return ResponseEntity.badRequest().body(ApiUtil.success(HttpStatus.BAD_REQUEST));
-        }
-    }
+
 
     /**
      * DELETE

@@ -1,6 +1,7 @@
 package com.knulinkmoa.domain.directory.entity;
 
 import com.knulinkmoa.domain.directory.dto.request.UpdateRequest;
+
 import com.knulinkmoa.domain.site.entity.Site;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,5 +53,8 @@ public class Directory {
         if (request.name() != null) {
             this.directoryName = request.name();
         }
+
     }
+
+
 }
