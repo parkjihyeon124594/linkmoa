@@ -1,6 +1,5 @@
 package com.knulinkmoa.domain.site.entity;
 
-import com.knulinkmoa.domain.directory.dto.request.UpdateRequest;
 import com.knulinkmoa.domain.directory.entity.Directory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,13 +43,4 @@ public class Site {
         this.directory = directory;
     }
 
-    public void update(UpdateRequest request){
-        if (request.name() != null) {
-            this.siteName = request.name();
-        }
-
-        if (request.url() != null) {
-            this.url = request.url();
-        }
-    }
 }

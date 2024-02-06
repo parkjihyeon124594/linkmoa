@@ -1,9 +1,9 @@
 package com.knulinkmoa.domain.directory.controller;
 
-import com.knulinkmoa.domain.directory.dto.request.DeleteRequest;
-import com.knulinkmoa.domain.directory.dto.request.SaveRequest;
-import com.knulinkmoa.domain.directory.dto.request.UpdateRequest;
-import com.knulinkmoa.domain.directory.dto.response.ReadResponse;
+
+import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
+import com.knulinkmoa.domain.directory.dto.response.DirectoryReadResponse;
+import com.knulinkmoa.domain.directory.service.DirectoryRelationService;
 import com.knulinkmoa.domain.directory.service.DirectoryService;
 import com.knulinkmoa.domain.global.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,80 +19,92 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/directory")
+@RequestMapping("/dir")
 @RequiredArgsConstructor
 public class DirectoryController {
 
     private final DirectoryService directoryService;
+    private final DirectoryRelationService directoryRelationService;
 
     /**
-     * CREATE
+     * ROOT DIRECTORY 추가
+     *
+     * @param request DIRECTORY 정보
+     * @return 저장한 DIRECTORY의 PK 값
      */
-    @PostMapping("/{directoryId}")
-    public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> save(
-            @RequestBody SaveRequest request,
-            @PathVariable("directoryId") Long id
-    ) {
-        if ("directory".equals(request.type())) {
-            Long saveDirectoryId = directoryService.saveDirectory(request, id);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveDirectoryId));
-        } else if ("site".equals(request.type())) {
-            Long saveSiteId = directoryService.saveSite(request, id);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveSiteId));
-        } else {
-            return ResponseEntity.badRequest().body(ApiUtil.success(HttpStatus.BAD_REQUEST));
-        }
+    @PostMapping()
+    public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveRootDirectory(
+            @RequestBody DirectorySaveRequest request) {
+        Long saveId = directoryService.saveDirectory(request, 0L);
+        directoryRelationService.saveRelation(request, saveId);
+
+        return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }
 
     /**
-     * READ
+     * SUB DIRECTORY 추가
+     *
+     * @param request DIRECTORY 정보
+     * @param parentId 추가할 디렉토리의 부모 디렉토리 정보
+     * @return 저장한 DIRECTORY의 PK 값
+     */
+    @PostMapping("/{directoryId}")
+    public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveSubDirectory(
+            @RequestBody DirectorySaveRequest request,
+            @PathVariable("directoryId") Long parentId) {
+
+        Long saveId = directoryService.saveDirectory(request, parentId);
+        directoryRelationService.saveRelation(request, saveId);
+
+        return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
+    }
+
+    /**
+     * DIRECTORY 내부의 모든 사이트 조회
+     *
+     * @param id 조회할 DIRECTORY의 PK 값
+     * @return 디렉토리 내부의 모든 사이트 정보
      */
     @GetMapping("/{directoryId}")
-    public ResponseEntity<ApiUtil.ApiSuccessResult<ReadResponse>> read(
+    public ResponseEntity<ApiUtil.ApiSuccessResult<DirectoryReadResponse>> readDirectory(
             @PathVariable("directoryId") Long id
     ) {
-        ReadResponse response = directoryService.readDirectory(id);
+
+        DirectoryReadResponse response = directoryService.readDirectory(id);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, response));
     }
 
     /**
-     * UPDATE
+     * DIRECTORY 수정
+     *
+     * @param request 수정할 DIRECTORY 정보
+     * @param id 수정할 DIRECTORY의 PK 값
+     * @return 수정한 DIRECTORY의 PK 값
      */
     @PutMapping("/{directoryId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> updateDirectory(
-            @RequestBody UpdateRequest request,
-            @PathVariable("directoryId") Long id
-    ) {
+            @RequestBody DirectorySaveRequest request,
+            @PathVariable("directoryId") Long id) {
 
-        if ("directory".equals(request.type())) {
-            Long updateDirectoryId = directoryService.updateDirectory(request, id);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, updateDirectoryId));
-        } else if ("site".equals(request.type())) {
-            Long updateSiteId = directoryService.updateSite(request);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, id));
-        } else {
-            return ResponseEntity.badRequest().body(ApiUtil.success(HttpStatus.BAD_REQUEST));
-        }
+        Long updateId = directoryService.updateDirectory(request, id);
+
+        return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, updateId));
     }
 
     /**
-     * DELETE
+     * DIRECTORY 삭제
+     *
+     * @param id 삭제할 DIRECTORY의 PK 값
+     * @return
      */
     @DeleteMapping("/{directoryId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<?>> deleteDirectory(
-            @RequestBody DeleteRequest request,
-            @PathVariable("directoryId") Long id) {
+            @PathVariable("directoryId") Long id
+    ) {
+        directoryService.deleteDirectory(id);
 
-        if ("directory".equals(request.type())) {
-            directoryService.deleteDirectory(id);
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK));
-        } else if ("site".equals(request.type())) {
-            directoryService.deleteSite(request.siteId());
-            return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK));
-        } else {
-            return ResponseEntity.badRequest().body(ApiUtil.success(HttpStatus.BAD_REQUEST));
-        }
+        return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK));
     }
 
 }

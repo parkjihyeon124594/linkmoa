@@ -1,15 +1,12 @@
 package com.knulinkmoa.domain.directory.service;
 
-import com.knulinkmoa.domain.directory.dto.request.SaveRequest;
-import com.knulinkmoa.domain.directory.dto.request.UpdateRequest;
-import com.knulinkmoa.domain.directory.dto.response.ReadResponse;
+import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
+import com.knulinkmoa.domain.directory.dto.response.DirectoryReadResponse;
 import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.directory.exception.DirectoryErrorCode;
 import com.knulinkmoa.domain.directory.repository.DirectoryRepository;
-import com.knulinkmoa.domain.site.entity.Site;
-import com.knulinkmoa.domain.site.exception.SiteErrorCode;
-import com.knulinkmoa.domain.site.repository.SiteRepository;
 import com.knulinkmoa.domain.global.exception.GlobalException;
+import com.knulinkmoa.domain.site.dto.request.SiteReadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,129 +19,63 @@ import java.util.List;
 public class DirectoryService {
 
     private final DirectoryRepository directoryRepository;
-    private final SiteRepository siteRepository;
 
     /**
-     * 하위 디렉토리 추가
-     * @param request
-     * @return
+     * CREATE
      */
     @Transactional
-    public Long saveDirectory(SaveRequest request, Long parentId) {
+    public Long saveDirectory(DirectorySaveRequest request, Long parentId) {
 
         Directory directory = Directory.builder()
-                .directoryName(request.name())
+                .directoryName(request.directoryName())
+                // .siteList()
                 .parentId(parentId)
                 .build();
 
-        Directory saveDirectory = directoryRepository.save(directory);
-        return saveDirectory.getId();
+        directoryRepository.save(directory);
+
+        return directory.getId();
     }
 
     /**
-     * 디렉토리에 시이트 추가
-     * @param request
-     * @return
+     * READ
      */
-    @Transactional
-    public Long saveSite(SaveRequest request, Long id) {
-
+    public DirectoryReadResponse readDirectory(Long id) {
         Directory findDirectory = directoryRepository.findById(id)
                 .orElseThrow(() -> new GlobalException(DirectoryErrorCode.DIRECTORY_NOT_FOUND));
 
-        Site site = Site.builder()
-                .siteName(request.name())
-                .url(request.url())
-                .directory(findDirectory)
+        List<SiteReadResponse> result = DirectoryReadResponse.siteToSiteReadResponse(findDirectory.getSiteList());
+
+        DirectoryReadResponse response = DirectoryReadResponse.builder()
+                .directoryName(findDirectory.getDirectoryName())
+                .siteList(result)
                 .build();
 
-       siteRepository.save(site);
-       return site.getId();
+        return response;
     }
 
     /**
-     * 디렉토리에 있는 사이트 읽어오기
-     * @param id
-     * @return
-     */
-    public ReadResponse readDirectory(Long id) {
-
-        Directory findDirectory = directoryRepository.findById(id)
-                .orElseThrow(() -> new GlobalException(DirectoryErrorCode.DIRECTORY_NOT_FOUND));
-
-        List<String> siteUrl = findDirectory.getSiteList().stream()
-                .map(Site::getUrl)
-                .toList();
-
-        List<String> siteName = findDirectory.getSiteList().stream()
-                .map(Site::getSiteName)
-                .toList();
-
-        ReadResponse readResponse = ReadResponse.builder()
-                .siteUrl(siteUrl)
-                .siteName(siteName)
-                .build();
-
-        return readResponse;
-    }
-
-    /**
-     * 디렉토리 이름 업데이트
-     * @param request
-     * @param id
-     * @return
+     * UPDATE
      */
     @Transactional
-    public Long updateDirectory(UpdateRequest request, Long id) {
-
-        Directory findDirectory = directoryRepository.findById(id)
+    public Long updateDirectory(DirectorySaveRequest request, Long id) {
+        Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new GlobalException(DirectoryErrorCode.DIRECTORY_NOT_FOUND));
 
-        findDirectory.update(request);
+        directory.update(request);
+        directoryRepository.save(directory);
 
-        directoryRepository.save(findDirectory);
-        return findDirectory.getId();
+        return directory.getId();
     }
 
     /**
-     * 사이트 이름과 url 업데이트
-     * @param request
-     * @return
-     */
-    @Transactional
-    public Long updateSite(UpdateRequest request) {
-
-        Site site = siteRepository.findById(request.siteId())
-                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
-
-        site.update(request);
-
-        return site.getId();
-    }
-
-    /**
-     * 디렉토리 삭제하기
-     * @param id
+     * DELETE
      */
     @Transactional
     public void deleteDirectory(Long id) {
-
-        Directory findDirectory = directoryRepository.findById(id)
+        Directory directory = directoryRepository.findById(id)
                 .orElseThrow(() -> new GlobalException(DirectoryErrorCode.DIRECTORY_NOT_FOUND));
 
-        directoryRepository.delete(findDirectory);
-    }
-
-    /**
-     * 사이트 삭제하기
-     * @param id
-     */
-    @Transactional
-    public void deleteSite(Long id) {
-
-        Site site = siteRepository.findById(id)
-                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
-
-        siteRepository.delete(site);
+        directoryRepository.delete(directory);
     }
 }
