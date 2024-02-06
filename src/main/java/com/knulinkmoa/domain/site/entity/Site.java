@@ -1,6 +1,5 @@
 package com.knulinkmoa.domain.site.entity;
 
-
 import com.knulinkmoa.domain.directory.entity.Directory;
 
 import com.knulinkmoa.domain.member.entity.Member;
@@ -61,6 +60,7 @@ public class Site {
         this.siteName = siteName;
         this.directory = directory;
     }
+
     public void update(SiteUpdateRequest request){
         if (request.name() != null) {
             this.siteName = request.name();

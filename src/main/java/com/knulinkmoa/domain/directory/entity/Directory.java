@@ -1,14 +1,17 @@
 package com.knulinkmoa.domain.directory.entity;
 
-import com.knulinkmoa.domain.directory.dto.request.UpdateRequest;
-
+import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
+import com.knulinkmoa.domain.member.entity.Member;
 import com.knulinkmoa.domain.site.entity.Site;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,10 +39,11 @@ public class Directory {
     @Column(name = "parent_id")
     private Long parentId;
 
-/*
+    /*
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;*/
+    private Member member;
+*/
 
     @Builder
     public Directory(Long id, String directoryName, List<Site> siteList, Long parentId) {
@@ -49,9 +53,9 @@ public class Directory {
         this.parentId = parentId;
     }
 
-    public void update(UpdateRequest request) {
-        if (request.name() != null) {
-            this.directoryName = request.name();
+    public void update(DirectorySaveRequest request) {
+        if (request.directoryName() != null) {
+            this.directoryName = directoryName;
         }
 
     }
