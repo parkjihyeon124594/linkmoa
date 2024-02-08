@@ -42,29 +42,12 @@ public class SiteService {
         siteRepository.save(site);
         return site.getId();
     }
-   /* member 추가
-
-   @Transactional
-    public Long saveSite(SiteSaveRequest request, Member member, Directory directory){
-
-        Site site=Site.builder()
-                .siteName(request.name())
-                .url(request.url())
-                .member(member)
-                .directory(directory)
-                .build();
-
-        siteRepository.save(site);
-        return site.getId();
-
-    }*/
-
 
     /**
      * READ
      */
-    public SiteReadResponse readSite(SiteIdGetRequest request){
-        Site site=siteRepository.findById(request.SiteId())
+    public SiteReadResponse readSite(SiteIdGetRequest request) {
+        Site site = siteRepository.findById(request.siteId())
                 .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
 
         return SiteReadResponse.builder()
@@ -82,9 +65,9 @@ public class SiteService {
      */
 
     @Transactional
-    public Long updateSite(SiteUpdateRequest request){
-        Site site=siteRepository.findById(request.oldSiteId())
-                .orElseThrow(()->new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
+    public Long updateSite(SiteUpdateRequest request) {
+        Site site = siteRepository.findById(request.oldSiteId())
+                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
 
         site.update(request);
 
@@ -96,9 +79,9 @@ public class SiteService {
      * DELETE
      */
     @Transactional
-    public void deleteSite(SiteIdGetRequest request){
-        Site deleteSite=siteRepository.findById(request.SiteId())
-                .orElseThrow(()->new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
+    public void deleteSite(SiteIdGetRequest request) {
+        Site deleteSite = siteRepository.findById(request.siteId())
+                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
 
         siteRepository.delete(deleteSite);
     }

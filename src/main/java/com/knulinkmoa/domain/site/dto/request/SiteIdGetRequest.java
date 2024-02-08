@@ -1,4 +1,4 @@
 package com.knulinkmoa.domain.site.dto.request;
 
-public record SiteIdGetRequest(Long SiteId) {
+public record SiteIdGetRequest(Long siteId) {
 }

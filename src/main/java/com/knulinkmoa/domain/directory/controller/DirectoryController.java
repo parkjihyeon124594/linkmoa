@@ -3,9 +3,9 @@ package com.knulinkmoa.domain.directory.controller;
 
 import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
 import com.knulinkmoa.domain.directory.dto.response.DirectoryReadResponse;
-import com.knulinkmoa.domain.directory.service.DirectoryRelationService;
 import com.knulinkmoa.domain.directory.service.DirectoryService;
 import com.knulinkmoa.domain.global.util.ApiUtil;
+import com.knulinkmoa.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DirectoryController {
 
     private final DirectoryService directoryService;
-    private final DirectoryRelationService directoryRelationService;
 
     /**
      * ROOT DIRECTORY 추가
@@ -35,11 +34,11 @@ public class DirectoryController {
     @PostMapping()
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveRootDirectory(
             @RequestBody DirectorySaveRequest request) {
-        Long saveId = directoryService.saveDirectory(request, 0L);
-        directoryRelationService.saveRelation(request, saveId);
+        Long saveId = directoryService.saveDirectory(request, null);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }
+
 
     /**
      * SUB DIRECTORY 추가
@@ -51,10 +50,10 @@ public class DirectoryController {
     @PostMapping("/{directoryId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveSubDirectory(
             @RequestBody DirectorySaveRequest request,
-            @PathVariable("directoryId") Long parentId) {
+            @PathVariable(name = "directoryId") Long parentId)
+    {
 
         Long saveId = directoryService.saveDirectory(request, parentId);
-        directoryRelationService.saveRelation(request, saveId);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }

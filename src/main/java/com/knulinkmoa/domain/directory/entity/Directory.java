@@ -17,12 +17,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Directory {
 
@@ -36,29 +38,34 @@ public class Directory {
     @OneToMany(mappedBy = "directory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Site> siteList = new ArrayList<>();
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_directory_id")
+    private Directory parentDirectory;
 
-    /*
+    @OneToMany(mappedBy = "parentDirectory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Directory> childDirectory = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-*/
 
     @Builder
-    public Directory(Long id, String directoryName, List<Site> siteList, Long parentId) {
+    public Directory(Long id, String directoryName, List<Site> siteList, Directory parentDirectory, List<Directory> childDirectory) {
         this.id = id;
         this.directoryName = directoryName;
         this.siteList = siteList;
-        this.parentId = parentId;
+        this.parentDirectory = parentDirectory;
+        this.childDirectory = childDirectory;
     }
 
     public void update(DirectorySaveRequest request) {
         if (request.directoryName() != null) {
             this.directoryName = directoryName;
         }
-
     }
 
-
+    public void addChildDirectory(Directory child) {
+        this.childDirectory.add(child);
+        child.setParentDirectory(this);
+    }
 }

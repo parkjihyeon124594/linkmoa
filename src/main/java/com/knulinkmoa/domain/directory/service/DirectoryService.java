@@ -6,6 +6,7 @@ import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.directory.exception.DirectoryErrorCode;
 import com.knulinkmoa.domain.directory.repository.DirectoryRepository;
 import com.knulinkmoa.domain.global.exception.GlobalException;
+import com.knulinkmoa.domain.member.entity.Member;
 import com.knulinkmoa.domain.site.dto.request.SiteReadResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,15 @@ public class DirectoryService {
 
         Directory directory = Directory.builder()
                 .directoryName(request.directoryName())
-                // .siteList()
-                .parentId(parentId)
                 .build();
+
+        if (parentId != null) {
+            Directory parentDirectory = directoryRepository.findById(parentId)
+                    .orElseThrow(() -> new GlobalException(DirectoryErrorCode.DIRECTORY_NOT_FOUND));
+
+            parentDirectory.addChildDirectory(directory);
+        }
+
 
         directoryRepository.save(directory);
 

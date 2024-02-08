@@ -24,35 +24,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Site {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "site_id")
     private Long id;
 
     @Column(name = "url")
     private String url;
 
-    @Column(name= "site_name")
+    @Column(name = "site_name")
     private String siteName;
 
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity=Directory.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Directory.class)
     @JoinColumn(name = "directory_id")
     private Directory directory;
 
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Member.class)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-
-/*  멤버 추가
- @Builder
-    public Site(Long id, String url, String siteName, Directory directory,Member member) {
-        this.id = id;
-        this.url = url;
-        this.siteName = siteName;
-        this.directory = directory;
-        this.member=member;
-    }
-*/
     @Builder
     public Site(Long id, String url, String siteName, Directory directory) {
         this.id = id;
@@ -61,7 +47,7 @@ public class Site {
         this.directory = directory;
     }
 
-    public void update(SiteUpdateRequest request){
+    public void update(SiteUpdateRequest request) {
         if (request.name() != null) {
             this.siteName = request.name();
         }

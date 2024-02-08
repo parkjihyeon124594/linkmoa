@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/site")
+@RequestMapping("/dir/{directoryId}")
 @RequiredArgsConstructor
 public class SiteController {
 
@@ -25,15 +25,13 @@ public class SiteController {
      * @param directoryId 디렉토리 ID (PK)
      * @return 추가한 데이터 PK값
      */
-    //1.멤버 빠짐.
-    //2.예외 처리
-    @PostMapping("/{directoryId}")
+    @PostMapping("/sites")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> save(
             @RequestBody SiteSaveRequest request,
-            @PathVariable("directoryId") Long directoryId
+            @PathVariable("directoryId") Long id
             )
     {
-        Long saveSiteId=siteService.saveSite(request,directoryId);
+        Long saveSiteId=siteService.saveSite(request, id);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveSiteId));
     }
@@ -43,7 +41,7 @@ public class SiteController {
      * @param request 사이트ID 조회 DTO
      * @return 사이트 정보
      */
-    @GetMapping("/{directoryId}")
+    @GetMapping("/{directoryId}/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<SiteReadResponse>>read
         (@RequestBody SiteIdGetRequest request)
     {
