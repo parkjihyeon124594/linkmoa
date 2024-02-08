@@ -38,6 +38,10 @@ public class Site {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Directory.class)
     @JoinColumn(name = "directory_id")
     private Directory directory;
+    
+    public void setDirectory(Directory directory) {
+        this.directory = directory;
+    }
 
     @Builder
     public Site(Long id, String url, String siteName, Directory directory) {

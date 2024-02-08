@@ -44,7 +44,7 @@ public class Directory {
 
     @OneToMany(mappedBy = "parentDirectory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Directory> childDirectory = new ArrayList<>();
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -62,6 +62,10 @@ public class Directory {
         if (request.directoryName() != null) {
             this.directoryName = directoryName;
         }
+    }
+    public void addSite(Site site){
+        siteList.add(site);
+        site.setDirectory(this);
     }
 
     public void addChildDirectory(Directory child) {
