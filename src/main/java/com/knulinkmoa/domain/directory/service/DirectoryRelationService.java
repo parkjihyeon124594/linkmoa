@@ -2,7 +2,6 @@ package com.knulinkmoa.domain.directory.service;
 
 import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
 import com.knulinkmoa.domain.directory.entity.Directory;
-import com.knulinkmoa.domain.directory.entity.DirectoryRelation;
 import com.knulinkmoa.domain.directory.exception.DirectoryErrorCode;
 import com.knulinkmoa.domain.directory.repository.DirectoryRelationRepository;
 import com.knulinkmoa.domain.directory.repository.DirectoryRepository;

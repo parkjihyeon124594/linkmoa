@@ -5,7 +5,6 @@ import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.directory.exception.DirectoryErrorCode;
 import com.knulinkmoa.domain.directory.repository.DirectoryRepository;
 import com.knulinkmoa.domain.global.exception.GlobalException;
-import com.knulinkmoa.domain.site.dto.request.SiteIdGetRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteSaveRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequest;
 import com.knulinkmoa.domain.site.dto.response.SiteReadResponse;
@@ -42,29 +41,12 @@ public class SiteService {
         siteRepository.save(site);
         return site.getId();
     }
-   /* member 추가
-
-   @Transactional
-    public Long saveSite(SiteSaveRequest request, Member member, Directory directory){
-
-        Site site=Site.builder()
-                .siteName(request.name())
-                .url(request.url())
-                .member(member)
-                .directory(directory)
-                .build();
-
-        siteRepository.save(site);
-        return site.getId();
-
-    }*/
-
 
     /**
      * READ
      */
-    public SiteReadResponse readSite(SiteIdGetRequest request){
-        Site site=siteRepository.findById(request.SiteId())
+    public SiteReadResponse readSite(Long siteId) {
+        Site site = siteRepository.findById(siteId)
                 .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
 
         return SiteReadResponse.builder()
@@ -74,17 +56,14 @@ public class SiteService {
     }
 
 
-    //read 함수를 실행하기 위해서는 siteId가 필요한데.
-    //siteId를 어떻게 가져올것인가 ? =>read DTO를 따로 만들어야 되는건가?
-
     /**
      * UPDATE
      */
 
     @Transactional
-    public Long updateSite(SiteUpdateRequest request){
-        Site site=siteRepository.findById(request.oldSiteId())
-                .orElseThrow(()->new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
+    public Long updateSite(SiteUpdateRequest request,Long oldSiteId) {
+        Site site = siteRepository.findById(oldSiteId)
+                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
 
         site.update(request);
 
@@ -96,9 +75,9 @@ public class SiteService {
      * DELETE
      */
     @Transactional
-    public void deleteSite(SiteIdGetRequest request){
-        Site deleteSite=siteRepository.findById(request.SiteId())
-                .orElseThrow(()->new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
+    public void deleteSite(Long siteId) {
+        Site deleteSite = siteRepository.findById(siteId)
+                .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
 
         siteRepository.delete(deleteSite);
     }

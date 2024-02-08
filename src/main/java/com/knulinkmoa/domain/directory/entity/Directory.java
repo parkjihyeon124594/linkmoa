@@ -39,11 +39,6 @@ public class Directory {
     @Column(name = "parent_id")
     private Long parentId;
 
-    /*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-*/
 
     @Builder
     public Directory(Long id, String directoryName, List<Site> siteList, Long parentId) {
@@ -58,6 +53,10 @@ public class Directory {
             this.directoryName = directoryName;
         }
 
+    }
+    public void addSite(Site site){
+        siteList.add(site);
+        site.setDirectory(this);
     }
 
 

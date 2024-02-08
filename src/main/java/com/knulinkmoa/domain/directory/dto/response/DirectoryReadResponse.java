@@ -1,6 +1,5 @@
 package com.knulinkmoa.domain.directory.dto.response;
 
-import com.knulinkmoa.domain.site.dto.request.SiteReadResponse;
 import com.knulinkmoa.domain.site.entity.Site;
 import lombok.Builder;
 

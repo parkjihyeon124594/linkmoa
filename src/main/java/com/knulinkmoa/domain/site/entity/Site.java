@@ -38,21 +38,10 @@ public class Site {
     @JoinColumn(name = "directory_id")
     private Directory directory;
 
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Member.class)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-
-/*  멤버 추가
- @Builder
-    public Site(Long id, String url, String siteName, Directory directory,Member member) {
-        this.id = id;
-        this.url = url;
-        this.siteName = siteName;
+    public void setDirectory(Directory directory) {
         this.directory = directory;
-        this.member=member;
     }
-*/
+
     @Builder
     public Site(Long id, String url, String siteName, Directory directory) {
         this.id = id;
