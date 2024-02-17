@@ -4,7 +4,7 @@ package com.knulinkmoa.domain.site.service;
 import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.directory.exception.DirectoryErrorCode;
 import com.knulinkmoa.domain.directory.repository.DirectoryRepository;
-import com.knulinkmoa.domain.global.exception.GlobalException;
+import com.knulinkmoa.global.exception.GlobalException;
 import com.knulinkmoa.domain.site.dto.request.SiteIdGetRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteSaveRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequest;

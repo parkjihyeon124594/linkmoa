@@ -1,4 +1,4 @@
-package com.knulinkmoa.domain.global.util;
+package com.knulinkmoa.global.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;

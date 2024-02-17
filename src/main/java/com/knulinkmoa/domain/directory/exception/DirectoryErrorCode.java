@@ -1,6 +1,6 @@
 package com.knulinkmoa.domain.directory.exception;
 
-import com.knulinkmoa.domain.global.exception.ErrorCode;
+import com.knulinkmoa.global.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 public enum DirectoryErrorCode implements ErrorCode {

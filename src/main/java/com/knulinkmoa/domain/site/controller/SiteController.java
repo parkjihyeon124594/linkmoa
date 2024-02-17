@@ -1,7 +1,7 @@
 package com.knulinkmoa.domain.site.controller;
 
 
-import com.knulinkmoa.domain.global.util.ApiUtil;
+import com.knulinkmoa.global.util.ApiUtil;
 import com.knulinkmoa.domain.site.dto.request.SiteIdGetRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteSaveRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequest;
@@ -41,7 +41,7 @@ public class SiteController {
      * @param request 사이트ID 조회 DTO
      * @return 사이트 정보
      */
-    @GetMapping("/{directoryId}/{siteId}")
+    @GetMapping("/sites/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<SiteReadResponse>>read
         (@RequestBody SiteIdGetRequest request)
     {
@@ -57,7 +57,7 @@ public class SiteController {
      * @return 수정한 데이터 PK값
      */
 
-    @PutMapping("/{directory}")
+    @PutMapping("/sites/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> update(
             @RequestBody SiteUpdateRequest request
             )
@@ -73,7 +73,7 @@ public class SiteController {
      * @return
      */
 
-    @DeleteMapping("/{directory}")
+    @DeleteMapping("/sites/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<?>> delete(
             @RequestBody SiteIdGetRequest request
             )
