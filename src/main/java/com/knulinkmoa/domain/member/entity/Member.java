@@ -1,5 +1,6 @@
 package com.knulinkmoa.domain.member.entity;
 
+import com.knulinkmoa.auth.dto.OAuth2Response;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,8 +25,8 @@ public class Member {
     @Column(name = "username")
     private String username; // 사용자 아이디
 
-    @Column(name = "password")
-    private String password; // 사용자 패스워드
+    @Column(name = "email")
+    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -34,16 +35,17 @@ public class Member {
     @Column(name = "nickname")
     private String nickname; // 사용자 닉네임
 
-    @Column(name = "phone_number")
-    private String phoneNumber; // 사용자 전화번호
-
     @Builder
-    public Member(Long id, String username, String password, Role role, String nickname, String phoneNumber) {
+    public Member(Long id, String username, String email, Role role, String nickname) {
         this.id = id;
         this.username = username;
-        this.password = password;
+        this.email = email;
         this.role = role;
         this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
+    }
+
+    public void update(OAuth2Response oAuth2Response) {
+        this.email = oAuth2Response.getEmail();
+        this.nickname = oAuth2Response.getName();
     }
 }
