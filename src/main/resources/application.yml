@@ -4,10 +4,11 @@ spring:
       client:
         registration:
           google:
-            client-id: 377262399790-62uns2qvacihnr0rn4u4pt34brs8ja8q.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 377262399790-22fej88tjrehtu9krk5q0aa8bv6e5lp6.apps.googleusercontent.com
+            client-secret: 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
             redirect-uri: http://localhost:8080/login/oauth2/code/google
-            scope: profile,email
+            scope: profile, email
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -23,3 +24,13 @@ spring:
     password: Xxmin050405!
   jwt:
     secret: kjvMLWXxW4VDgWK6Cf5QjFiDoCRrQfKDFZQQgmT8gzF2pwfQPy
+
+logging:
+  level:
+    org:
+    hibernate:
+      SQL: DEBUG
+    type:
+      descriptor:
+        sql:
+          BasicBinder: TRACE

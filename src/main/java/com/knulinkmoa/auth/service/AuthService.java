@@ -22,13 +22,12 @@ public class AuthService {
      * @param request Authorization code 값
      * @return LoginResponse DTO
      */
-    public LoginResponse googleLogin(LoginRequest request) {
+    public LoginResponse googleLogin(String authcode) {
 
-        String authcode = URLDecoder.decode(request.authcode(), StandardCharsets.UTF_8);
-        String accessToken = googleOAuth2Service.getGoogleAccessToken(authcode);
+        String code = URLDecoder.decode(authcode, StandardCharsets.UTF_8);
 
+        String accessToken = googleOAuth2Service.getGoogleAccessToken(code);
         String userInfo = googleOAuth2Service.getUserInfo(accessToken);
-        System.out.println("userInfo = " + userInfo);
 
         return LoginResponse.builder()
                 .userinfo(userInfo)
