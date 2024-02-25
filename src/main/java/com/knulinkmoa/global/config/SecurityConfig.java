@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .authorizeHttpRequests((auth) -> auth
                                 .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated())
-                        .oauth2Client(Customizer.withDefaults())
+                        .oauth2Login(Customizer.withDefaults())
                         .sessionManagement((session) -> session
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .build();
