@@ -1,6 +1,6 @@
 package com.knulinkmoa.domain.member.entity;
 
-import com.knulinkmoa.auth.dto.OAuth2Response;
+import com.knulinkmoa.auth.dto.request.OAuth2DTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,8 +22,8 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "username")
-    private String username; // 사용자 아이디
+    @Column(name = "name")
+    private String name; // 사용자 이름
 
     @Column(name = "email")
     private String email;
@@ -32,20 +32,25 @@ public class Member {
     @Column(name = "role")
     private Role role; // 사용자의 역할
 
-    @Column(name = "nickname")
-    private String nickname; // 사용자 닉네임
-
     @Builder
-    public Member(Long id, String username, String email, Role role, String nickname) {
+    public Member(Long id, String name, String email, Role role) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.email = email;
         this.role = role;
-        this.nickname = nickname;
     }
 
-    public void update(OAuth2Response oAuth2Response) {
-        this.email = oAuth2Response.getEmail();
-        this.nickname = oAuth2Response.getName();
+    public void update(OAuth2DTO oAuth2DTO) {
+        if (oAuth2DTO.name() != null) {
+            this.name = oAuth2DTO.name();
+        }
+
+        if (oAuth2DTO.email() != null) {
+            this.email = oAuth2DTO.email();
+        }
+
+        if (oAuth2DTO.role() != null) {
+            this.role = Role.valueOf(oAuth2DTO.role());
+        }
     }
 }

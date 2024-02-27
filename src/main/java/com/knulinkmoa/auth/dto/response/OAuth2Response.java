@@ -1,4 +1,4 @@
-package com.knulinkmoa.auth.dto;
+package com.knulinkmoa.auth.dto.response;
 
 public interface OAuth2Response {
 

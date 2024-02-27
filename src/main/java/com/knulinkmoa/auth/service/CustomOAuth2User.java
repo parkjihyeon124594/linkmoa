@@ -1,6 +1,6 @@
-package com.knulinkmoa.auth.dto;
+package com.knulinkmoa.auth.service;
 
-import lombok.RequiredArgsConstructor;
+import com.knulinkmoa.auth.dto.request.OAuth2DTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -8,36 +8,39 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-@RequiredArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
-    private final MemberDTO memberDTO;
+    private final OAuth2DTO oAuth2DTO;
+
+    public CustomOAuth2User(OAuth2DTO oAuth2DTO) {
+        this.oAuth2DTO = oAuth2DTO;
+    }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return oAuth2DTO.attributes();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new GrantedAuthority() {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return memberDTO.getRole();
+                return oAuth2DTO.role();
             }
         });
 
-        return collection;
+        return authorities;
     }
 
     @Override
     public String getName() {
-        return memberDTO.getNickname();
+        return oAuth2DTO.name();
     }
 
-    public String getUsername() {
-        return memberDTO.getUsername();
+    public String getEmail() {
+        return oAuth2DTO.email();
     }
 }
