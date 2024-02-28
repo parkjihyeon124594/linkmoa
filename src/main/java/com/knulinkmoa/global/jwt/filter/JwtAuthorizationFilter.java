@@ -24,11 +24,24 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String [] excludePathLists = {"/login", "/favicon.ico"};
+        String path = request.getRequestURI();
+
+        return Arrays.stream(excludePathLists).
+                anyMatch((excludePath) -> excludePath.equals(path));
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromCookie(request.getCookies());
         // String token = jwtTokenProvider.bearerTokenResolver(bearerToken);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
+
+            System.out.println("request = " + request.getRequestURL());
+
             String email = jwtTokenProvider.getEmail(token);
             String role = jwtTokenProvider.getRole(token);
 
@@ -36,7 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     .email(email)
                     .role(role)
                     .build();
-            
+
             //UserDetails에 회원 정보 객체 담기
             CustomOAuth2User customOAuth2User = new CustomOAuth2User(oAuth2DTO);
 
