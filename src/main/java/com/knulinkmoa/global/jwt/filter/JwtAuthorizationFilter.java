@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     .email(email)
                     .role(role)
                     .build();
-
+            
             //UserDetails에 회원 정보 객체 담기
             CustomOAuth2User customOAuth2User = new CustomOAuth2User(oAuth2DTO);
 
@@ -44,7 +45,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             //세션에 사용자 등록
             SecurityContextHolder.getContext().setAuthentication(authToken);
-
             System.out.println("====== 등록 성공 ======");
         }
 

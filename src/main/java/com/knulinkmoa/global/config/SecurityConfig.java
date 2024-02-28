@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .formLogin(AbstractHttpConfigurer::disable)
                         .httpBasic(AbstractHttpConfigurer::disable)
                         .authorizeHttpRequests((auth) -> auth
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/login/**").permitAll()
                                 .anyRequest().authenticated())
                         .addFilterBefore(new JwtAuthorizationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                         .oauth2Login(oauth2 -> oauth2
