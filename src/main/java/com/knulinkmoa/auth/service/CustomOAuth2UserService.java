@@ -5,7 +5,6 @@ import com.knulinkmoa.auth.dto.response.GoogleResponse;
 import com.knulinkmoa.auth.dto.response.NaverResponse;
 import com.knulinkmoa.auth.dto.response.OAuth2Response;
 import com.knulinkmoa.domain.member.entity.Member;
-import com.knulinkmoa.domain.member.entity.Role;
 import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -28,6 +27,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // user 정보를 가져옴
         OAuth2User oAuth2User = super.loadUser(userRequest);
+
+        System.out.println("oAuth2User = " + oAuth2User);
 
         // 어떤 소셜인지 .. google, naver, kakao
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -73,8 +74,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private static OAuth2DTO createOAuth2DTO(OAuth2User oAuth2User, OAuth2Response oAuth2Response) {
         return OAuth2DTO.builder()
                 .attributes(oAuth2User.getAttributes())
-                .name(oAuth2Response.getEmail())
-                .email(oAuth2Response.getName())
+                .name(oAuth2Response.getName())
+                .email(oAuth2Response.getEmail())
                 .role("ROLE_USER")
                 .build();
     }
