@@ -1,8 +1,8 @@
-package com.knulinkmoa.domain.global.exception.handler;
+package com.knulinkmoa.global.exception.handler;
 
-import com.knulinkmoa.domain.global.exception.GlobalException;
-import com.knulinkmoa.domain.global.util.ApiUtil;
-import com.knulinkmoa.domain.global.util.ApiUtil.ApiErrorResult;
+import com.knulinkmoa.global.exception.GlobalException;
+import com.knulinkmoa.global.util.ApiUtil;
+import com.knulinkmoa.global.util.ApiUtil.ApiErrorResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

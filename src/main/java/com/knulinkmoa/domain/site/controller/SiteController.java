@@ -1,7 +1,8 @@
 package com.knulinkmoa.domain.site.controller;
 
 
-import com.knulinkmoa.domain.global.util.ApiUtil;
+import com.knulinkmoa.global.util.ApiUtil;
+import com.knulinkmoa.domain.site.dto.request.SiteIdGetRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteSaveRequest;
 import com.knulinkmoa.domain.site.dto.request.SiteUpdateRequest;
 import com.knulinkmoa.domain.site.dto.response.SiteReadResponse;
@@ -24,7 +25,7 @@ public class SiteController {
      * @param directoryId 디렉토리 ID (PK)
      * @return 추가한 데이터 PK값
      */
-    @PostMapping()
+    @PostMapping("/sites")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> save(
             @RequestBody SiteSaveRequest request,
             @PathVariable("directoryId") Long id
@@ -37,14 +38,14 @@ public class SiteController {
 
     /**
      * 사이트 정보 조회 (READ)
-     * @param siteId 조회 DTO
+     * @param request 사이트ID 조회 DTO
      * @return 사이트 정보
      */
     @GetMapping("/sites/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<SiteReadResponse>>read
-        ( @PathVariable("siteId") Long siteId)
+        (@RequestBody SiteIdGetRequest request)
     {
-        SiteReadResponse response=siteService.readSite(siteId);
+        SiteReadResponse response=siteService.readSite(request);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK, response));
     }
@@ -58,26 +59,26 @@ public class SiteController {
 
     @PutMapping("/sites/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> update(
-            @RequestBody SiteUpdateRequest request,
-            @PathVariable("siteId") Long oldSiteId
+            @RequestBody SiteUpdateRequest request
             )
     {
-        Long newSiteid=siteService.updateSite(request,oldSiteId);
+        Long newSiteid=siteService.updateSite(request);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, newSiteid));
     }
+
     /**
      * DELETE
-     * @param siteId 조회 조회 DTO
+     * @param request 사이트ID 조회 DTO
      * @return
      */
 
     @DeleteMapping("/sites/{siteId}")
     public ResponseEntity<ApiUtil.ApiSuccessResult<?>> delete(
-            @PathVariable("siteId") Long siteId
+            @RequestBody SiteIdGetRequest request
             )
     {
-        siteService.deleteSite(siteId);
+        siteService.deleteSite(request);
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.OK));
     }
 }

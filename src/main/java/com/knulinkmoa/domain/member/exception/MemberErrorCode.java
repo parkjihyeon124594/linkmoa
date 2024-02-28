@@ -1,19 +1,18 @@
-package com.knulinkmoa.domain.site.exception;
+package com.knulinkmoa.domain.member.exception;
 
 import com.knulinkmoa.global.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
-public enum SiteErrorCode implements ErrorCode {
+public enum MemberErrorCode implements ErrorCode {
 
-    SITE_NOT_FOUND(HttpStatus.NOT_FOUND,"Noneexistent site");
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND,"NoneExistent Member");
     private final HttpStatus status;
     private final String message;
 
-    SiteErrorCode(HttpStatus status, String message) {
+    MemberErrorCode(HttpStatus status, String message) {
         this.status = status;
         this.message = message;
     }
-
 
     @Override
     public HttpStatus status() {
