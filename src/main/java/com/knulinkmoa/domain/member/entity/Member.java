@@ -53,4 +53,4 @@ public class Member {
             this.role = Role.valueOf(oAuth2DTO.role());
         }
     }
-}
+ }

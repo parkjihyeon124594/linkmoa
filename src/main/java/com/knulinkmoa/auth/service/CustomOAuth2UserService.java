@@ -44,6 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // customOAuth2User를 리턴
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(oAuth2DTO);
+
         return customOAuth2User;
     }
 
