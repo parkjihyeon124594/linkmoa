@@ -2,6 +2,12 @@ package com.knulinkmoa.global.jwt.filter;
 
 import com.knulinkmoa.auth.dto.request.OAuth2DTO;
 import com.knulinkmoa.auth.service.CustomOAuth2User;
+import com.knulinkmoa.domain.member.entity.Member;
+import com.knulinkmoa.domain.member.entity.Role;
+import com.knulinkmoa.domain.member.exception.MemberErrorCode;
+import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
+import com.knulinkmoa.domain.member.service.MemberService;
+import com.knulinkmoa.global.exception.GlobalException;
 import com.knulinkmoa.global.jwt.provider.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,6 +27,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -40,25 +47,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
 
-            System.out.println("request = " + request.getRequestURL());
-
             String email = jwtTokenProvider.getEmail(token);
-            String role = jwtTokenProvider.getRole(token);
-
-            OAuth2DTO oAuth2DTO = OAuth2DTO.builder()
-                    .email(email)
-                    .role(role)
-                    .build();
 
             //UserDetails에 회원 정보 객체 담기
-            CustomOAuth2User customOAuth2User = new CustomOAuth2User(oAuth2DTO);
+            CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberService.findMemberByEmail(email));
 
             //스프링 시큐리티 인증 토큰 생성
             Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
 
             //세션에 사용자 등록
             SecurityContextHolder.getContext().setAuthentication(authToken);
-            System.out.println("====== 등록 성공 ======");
         }
 
         filterChain.doFilter(request, response);

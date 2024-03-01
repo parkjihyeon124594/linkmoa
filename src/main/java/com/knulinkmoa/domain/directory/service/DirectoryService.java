@@ -5,6 +5,7 @@ import com.knulinkmoa.domain.directory.dto.response.DirectoryReadResponse;
 import com.knulinkmoa.domain.directory.entity.Directory;
 import com.knulinkmoa.domain.directory.exception.DirectoryErrorCode;
 import com.knulinkmoa.domain.directory.repository.DirectoryRepository;
+import com.knulinkmoa.domain.member.entity.Member;
 import com.knulinkmoa.domain.site.dto.response.SiteReadResponse;
 import com.knulinkmoa.global.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ public class DirectoryService {
      * CREATE
      */
     @Transactional
-    public Long saveDirectory(DirectorySaveRequest request, Long parentId) {
-
+    public Long saveDirectory(DirectorySaveRequest request, Member member, Long parentId) {
         Directory directory = Directory.builder()
                 .directoryName(request.directoryName())
+                .member(member)
                 .build();
 
         if (parentId != null) {
@@ -36,8 +37,6 @@ public class DirectoryService {
 
             parentDirectory.addChildDirectory(directory);
         }
-
-
         directoryRepository.save(directory);
 
         return directory.getId();

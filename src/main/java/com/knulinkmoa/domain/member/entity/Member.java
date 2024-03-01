@@ -1,6 +1,8 @@
 package com.knulinkmoa.domain.member.entity;
 
 import com.knulinkmoa.auth.dto.request.OAuth2DTO;
+import com.knulinkmoa.domain.directory.entity.Directory;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,10 +10,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,12 +38,16 @@ public class Member {
     @Column(name = "role")
     private Role role; // 사용자의 역할
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Directory> directories = new ArrayList<>();
+
     @Builder
-    public Member(Long id, String name, String email, Role role) {
+    public Member(Long id, String name, String email, Role role, List<Directory> directories) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.directories = directories;
     }
 
     public void update(OAuth2DTO oAuth2DTO) {
