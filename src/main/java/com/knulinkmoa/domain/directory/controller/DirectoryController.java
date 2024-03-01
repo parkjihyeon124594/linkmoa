@@ -1,13 +1,18 @@
 package com.knulinkmoa.domain.directory.controller;
 
 
+import com.knulinkmoa.auth.service.CustomOAuth2User;
 import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
 import com.knulinkmoa.domain.directory.dto.response.DirectoryReadResponse;
 import com.knulinkmoa.domain.directory.service.DirectoryService;
+import com.knulinkmoa.domain.member.entity.Member;
+import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
 import com.knulinkmoa.global.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/dir")
 @RequiredArgsConstructor
 public class DirectoryController {
 
     private final DirectoryService directoryService;
+    private final MemberRepository memberRepository;
 
     /**
      * ROOT DIRECTORY 추가
@@ -31,9 +39,12 @@ public class DirectoryController {
      * @return 저장한 DIRECTORY의 PK 값
      */
     @PostMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveRootDirectory(
-            @RequestBody DirectorySaveRequest request) {
-        Long saveId = directoryService.saveDirectory(request, null);
+            @RequestBody DirectorySaveRequest request,
+            @AuthenticationPrincipal CustomOAuth2User customOAuth2User
+    ) {
+        Long saveId = directoryService.saveDirectory(request, customOAuth2User.getMember(), null);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }
@@ -47,13 +58,14 @@ public class DirectoryController {
      * @return 저장한 DIRECTORY의 PK 값
      */
     @PostMapping("/{directoryId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveSubDirectory(
             @RequestBody DirectorySaveRequest request,
+            @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
             @PathVariable(name = "directoryId") Long parentId)
     {
 
-        Long saveId = directoryService.saveDirectory(request, parentId);
-
+        Long saveId = directoryService.saveDirectory(request, customOAuth2User.getMember(),parentId);
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }
 

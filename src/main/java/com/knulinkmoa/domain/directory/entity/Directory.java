@@ -50,12 +50,13 @@ public class Directory {
     private Member member;
 
     @Builder
-    public Directory(Long id, String directoryName, List<Site> siteList, Directory parentDirectory, List<Directory> childDirectory) {
+    public Directory(Long id, String directoryName, List<Site> siteList, Directory parentDirectory, List<Directory> childDirectory, Member member) {
         this.id = id;
         this.directoryName = directoryName;
         this.siteList = siteList;
         this.parentDirectory = parentDirectory;
         this.childDirectory = childDirectory;
+        this.member = member;
     }
 
     public void update(DirectorySaveRequest request) {
