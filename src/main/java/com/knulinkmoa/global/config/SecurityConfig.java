@@ -2,6 +2,7 @@ package com.knulinkmoa.global.config;
 
 import com.knulinkmoa.auth.handler.CustomOAuth2SuccessHandler;
 import com.knulinkmoa.auth.service.CustomOAuth2UserService;
+import com.knulinkmoa.domain.member.service.MemberService;
 import com.knulinkmoa.global.jwt.filter.JwtAuthorizationFilter;
 import com.knulinkmoa.global.jwt.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class SecurityConfig{
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -37,7 +39,7 @@ public class SecurityConfig{
                         .authorizeHttpRequests((auth) -> auth
                                 .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                                 .anyRequest().authenticated())
-                        .addFilterBefore(new JwtAuthorizationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                        .addFilterBefore(new JwtAuthorizationFilter(memberService, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                         .oauth2Login(oauth2 -> oauth2
                                         .userInfoEndpoint(userInfoEndpointConfig ->
                                                 userInfoEndpointConfig.userService(customOAuth2UserService))

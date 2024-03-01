@@ -1,24 +1,34 @@
 package com.knulinkmoa.auth.service;
 
 import com.knulinkmoa.auth.dto.request.OAuth2DTO;
+import com.knulinkmoa.domain.member.entity.Member;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+@Getter
 public class CustomOAuth2User implements OAuth2User {
 
-    private final OAuth2DTO oAuth2DTO;
+    private Member member;
+    private Map<String, Object> attributes;
 
-    public CustomOAuth2User(OAuth2DTO oAuth2DTO) {
-        this.oAuth2DTO = oAuth2DTO;
+    public CustomOAuth2User(Member member) {
+        this.member = member;
+    }
+
+    public CustomOAuth2User(Member member, Map<String, Object> attributes) {
+        this.member = member;
+        this.attributes = attributes;
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return oAuth2DTO.attributes();
+        return this.attributes;
     }
 
     @Override
@@ -28,7 +38,7 @@ public class CustomOAuth2User implements OAuth2User {
         authorities.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return oAuth2DTO.role();
+                return String.valueOf(member.getRole());
             }
         });
 
@@ -37,10 +47,10 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return oAuth2DTO.name();
+        return member.getName();
     }
 
     public String getEmail() {
-        return oAuth2DTO.email();
+        return member.getEmail();
     }
 }
