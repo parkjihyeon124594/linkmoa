@@ -65,10 +65,13 @@ public class SiteService {
      */
 
     @Transactional
-    public Long updateSite(SiteUpdateRequest request) {
+    public Long updateSite(SiteUpdateRequest request,Long directoryId) {
         Site site = siteRepository.findById(request.oldSiteId())
                 .orElseThrow(() -> new GlobalException(SiteErrorCode.SITE_NOT_FOUND));
+        Directory directory = directoryRepository.findById(directoryId)
+                        .orElseThrow(() -> new GlobalException(DirectoryErrorCode.DIRECTORY_NOT_FOUND));
 
+        site.setDirectory(directory);
         site.update(request);
 
         siteRepository.save(site);

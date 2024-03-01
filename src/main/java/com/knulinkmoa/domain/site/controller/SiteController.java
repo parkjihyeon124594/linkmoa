@@ -10,7 +10,10 @@ import com.knulinkmoa.domain.site.service.SiteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/dir/{directoryId}")
@@ -22,16 +25,17 @@ public class SiteController {
     /**
      * 사이트 추가(CREATE)
      * @param request 사이트 추가 DTO
-     * @param directoryId 디렉토리 ID (PK)
+     * @param directoyId 디렉토리 ID
      * @return 추가한 데이터 PK값
      */
     @PostMapping("/sites")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> save(
             @RequestBody SiteSaveRequest request,
-            @PathVariable("directoryId") Long id
+            @PathVariable("directoryId") Long directoyId
             )
     {
-        Long saveSiteId=siteService.saveSite(request, id);
+        Long saveSiteId=siteService.saveSite(request, directoyId);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveSiteId));
     }
@@ -42,6 +46,7 @@ public class SiteController {
      * @return 사이트 정보
      */
     @GetMapping("/sites/{siteId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<SiteReadResponse>>read
         (@RequestBody SiteIdGetRequest request)
     {
@@ -56,13 +61,14 @@ public class SiteController {
      * @param request 사이트 수정 DTO
      * @return 수정한 데이터 PK값
      */
-
     @PutMapping("/sites/{siteId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> update(
-            @RequestBody SiteUpdateRequest request
+            @RequestBody SiteUpdateRequest request,
+            @PathVariable("directoryId") Long directoyId
             )
     {
-        Long newSiteid=siteService.updateSite(request);
+        Long newSiteid = siteService.updateSite(request,directoyId);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, newSiteid));
     }
@@ -74,6 +80,7 @@ public class SiteController {
      */
 
     @DeleteMapping("/sites/{siteId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<?>> delete(
             @RequestBody SiteIdGetRequest request
             )
