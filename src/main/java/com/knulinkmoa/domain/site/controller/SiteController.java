@@ -65,7 +65,7 @@ public class SiteController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> update(
             @RequestBody SiteUpdateRequest request,
-            @PathVariable("directoryId") Long directoyId
+            @PathVariable("directoryId") Long directoyId // directory id를 request http로 받도록 수정해야됨 03.01
             )
     {
         Long newSiteid = siteService.updateSite(request,directoyId);
@@ -79,7 +79,7 @@ public class SiteController {
      * @return
      */
 
-    @DeleteMapping("/sites/{siteId}")
+    @DeleteMapping("/sites")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<?>> delete(
             @RequestBody SiteIdGetRequest request

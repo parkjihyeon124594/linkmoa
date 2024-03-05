@@ -1,12 +1,11 @@
 package com.knulinkmoa.domain.directory.controller;
 
 
-import com.knulinkmoa.auth.service.CustomOAuth2User;
 import com.knulinkmoa.domain.directory.dto.request.DirectorySaveRequest;
 import com.knulinkmoa.domain.directory.dto.response.DirectoryReadResponse;
 import com.knulinkmoa.domain.directory.service.DirectoryService;
-import com.knulinkmoa.domain.member.entity.Member;
 import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
+import com.knulinkmoa.global.details.PrincipalDetails;
 import com.knulinkmoa.global.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,12 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/dir")
 @RequiredArgsConstructor
 public class DirectoryController {
+
 
     private final DirectoryService directoryService;
     private final MemberRepository memberRepository;
@@ -42,9 +40,9 @@ public class DirectoryController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveRootDirectory(
             @RequestBody DirectorySaveRequest request,
-            @AuthenticationPrincipal CustomOAuth2User customOAuth2User
+            @AuthenticationPrincipal PrincipalDetails PrincipalDetails
     ) {
-        Long saveId = directoryService.saveDirectory(request, customOAuth2User.getMember(), null);
+        Long saveId = directoryService.saveDirectory(request, PrincipalDetails.getMember(), null);
 
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }
@@ -61,11 +59,11 @@ public class DirectoryController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiUtil.ApiSuccessResult<Long>> saveSubDirectory(
             @RequestBody DirectorySaveRequest request,
-            @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable(name = "directoryId") Long parentId)
     {
 
-        Long saveId = directoryService.saveDirectory(request, customOAuth2User.getMember(),parentId);
+        Long saveId = directoryService.saveDirectory(request, principalDetails.getMember(),parentId);
         return ResponseEntity.ok().body(ApiUtil.success(HttpStatus.CREATED, saveId));
     }
 

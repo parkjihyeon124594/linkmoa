@@ -1,14 +1,19 @@
-package com.knulinkmoa.auth.service;
+package com.knulinkmoa.global.details;
 
 import com.knulinkmoa.auth.dto.request.OAuth2DTO;
 import com.knulinkmoa.auth.dto.response.GoogleResponse;
 import com.knulinkmoa.auth.dto.response.NaverResponse;
 import com.knulinkmoa.auth.dto.response.OAuth2Response;
 import com.knulinkmoa.domain.member.entity.Member;
+import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
 import com.knulinkmoa.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -16,15 +21,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+public class PrincipalDetailsService implements UserDetailsService, OAuth2UserService {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        PrincipalDetails principalDetails = new PrincipalDetails(memberService.findMemberByEmail(email));
+
+        Member member = memberRepository.findByEmail(principalDetails.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일이 존재하지 않습니다."));
+
+        return principalDetails;
+    }
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        // user 정보를 가져옴
-        OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        System.out.println("oAuth2User = " + oAuth2User);
+        System.out.println("principalDetailsService loadUser test : ");
+        DefaultOAuth2UserService defaultOAuth2UserService= new DefaultOAuth2UserService();
+        OAuth2User oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
+        Member member=null;
 
         // 어떤 소셜인지 .. google, naver, kakao
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -36,12 +55,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2DTO oAuth2DTO = createOAuth2DTO(oAuth2User, oAuth2Response);
 
         // oAuth2DTO를 통해서, 우리 서비스에서 관리할 member를 saveOrUpdate
-        Member member = memberService.saveOrUpdate(oAuth2DTO);
 
-        // customOAuth2User를 리턴
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(member);
-      
-        return customOAuth2User;
+        if(!memberService.existMemberByEmail(oAuth2DTO.email())){
+            member = memberService.save(oAuth2DTO.email(),oAuth2DTO.name());
+            System.out.println("save member ");
+        }
+        else{
+            member=memberService.findMemberByEmail(oAuth2DTO.email());
+            System.out.println("find member");
+        }
+
+        PrincipalDetails principalDetails =new PrincipalDetails(member);
+        return principalDetails;
     }
 
     /**
@@ -76,5 +101,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .role("ROLE_USER")
                 .build();
     }
-
 }

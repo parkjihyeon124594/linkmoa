@@ -1,13 +1,7 @@
 package com.knulinkmoa.global.jwt.filter;
 
-import com.knulinkmoa.auth.dto.request.OAuth2DTO;
-import com.knulinkmoa.auth.service.CustomOAuth2User;
-import com.knulinkmoa.domain.member.entity.Member;
-import com.knulinkmoa.domain.member.entity.Role;
-import com.knulinkmoa.domain.member.exception.MemberErrorCode;
-import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
 import com.knulinkmoa.domain.member.service.MemberService;
-import com.knulinkmoa.global.exception.GlobalException;
+import com.knulinkmoa.global.details.PrincipalDetails;
 import com.knulinkmoa.global.jwt.provider.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -32,7 +25,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String [] excludePathLists = {"/login", "/favicon.ico"};
+        String [] excludePathLists = {"/login", "/favicon.ico","/auth/sign-up",};
         String path = request.getRequestURI();
 
         return Arrays.stream(excludePathLists).
@@ -50,12 +43,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             String email = jwtTokenProvider.getEmail(token);
 
             //UserDetails에 회원 정보 객체 담기
-            CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberService.findMemberByEmail(email));
 
+            PrincipalDetails principalDetails =new PrincipalDetails(memberService.findMemberByEmail(email));
             //스프링 시큐리티 인증 토큰 생성
-            Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
+            Authentication authToken = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 
-            //세션에 사용자 등록
+            //SecurityContextHolder에 사용자 정보 등록
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

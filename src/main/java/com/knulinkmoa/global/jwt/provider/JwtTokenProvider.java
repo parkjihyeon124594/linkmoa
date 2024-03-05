@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import jakarta.servlet.http.Cookie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
-public class JwtTokenProvider {
+public class  JwtTokenProvider {
 
     private final SecretKey secretKey;
 
@@ -68,6 +69,14 @@ public class JwtTokenProvider {
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
                 .compact();
+    }
+    public Cookie createCookie(String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(60*60*60);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 
     public String bearerTokenResolver(String bearerToken) {

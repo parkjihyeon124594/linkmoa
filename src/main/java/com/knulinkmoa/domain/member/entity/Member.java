@@ -31,6 +31,10 @@ public class Member {
     @Column(name = "name")
     private String name; // 사용자 이름
 
+
+    @Column(name ="password")
+    private String password;
+
     @Column(name = "email")
     private String email;
 
@@ -42,10 +46,11 @@ public class Member {
     private List<Directory> directories = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String name, String email, Role role, List<Directory> directories) {
+    public Member(Long id, String name, String email, Role role,String password ,List<Directory> directories) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.role = role;
         this.directories = directories;
     }
