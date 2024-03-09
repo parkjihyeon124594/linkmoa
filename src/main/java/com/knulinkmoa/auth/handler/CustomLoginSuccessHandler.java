@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Enumeration;
 
 @Component
 @RequiredArgsConstructor
@@ -28,11 +29,19 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         Collection<? extends GrantedAuthority> authorities = oAuth2User.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
 
-        String token = jwtTokenProvider.createJwt(oAuth2User.getEmail(), role, 60 * 60 * 60L);
+        String accessToken =jwtTokenProvider.createJwt("accessToken",oAuth2User.getEmail(),role,600000L);
+        String refreshToken =jwtTokenProvider.createJwt("refreshToken", oAuth2User.getEmail(), role,86400000L);
 
-        log.info("로그인 성공 토큰 : {}",token);
+        log.info("custom login access token : {}",accessToken);
+        log.info("custom login refresh token : {}",refreshToken);
+        /*각각의 토큰은 생명주기와 사용처가 다르기 때문에 2강에서 설명드린바와 같이 서로 다른 저장소에 발급합니다.
 
-        response.addCookie(jwtTokenProvider.createCookie("Authorization",token));
+                - Access : 헤더에 발급 후 프론트에서 로컬 스토리지 저장
+                - Refresh : 쿠키에 발급
+
+         */
+        response.setHeader("accessToken",accessToken);
+        response.addCookie(jwtTokenProvider.createCookie("Authorization",refreshToken));
         response.sendRedirect("http://localhost:3000");
 
 

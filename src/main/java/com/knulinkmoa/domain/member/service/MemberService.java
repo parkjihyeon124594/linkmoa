@@ -26,7 +26,7 @@ public class MemberService {
      * @return
      */
     @Transactional
-    public Member save(String name,String email){
+    public Member save(String email,String name){
         Member member = memberRepository.save(Member.builder()
                         .email(email)
                         .password(passwordEncoder.encode(OauthUtil.oauthPasswordKey))

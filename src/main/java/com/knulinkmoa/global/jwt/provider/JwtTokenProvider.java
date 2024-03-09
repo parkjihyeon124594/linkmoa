@@ -40,6 +40,11 @@ public class  JwtTokenProvider {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
+    public String getCategory(String token){
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category",String.class);
+    }
+
     public Boolean isExpired(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
@@ -60,9 +65,9 @@ public class  JwtTokenProvider {
         }
         return false;
     }
-
-    public String createJwt(String email, String role, Long expiredMs) {
+    public String createJwt(String category,String email, String role, Long expiredMs) {
         return Jwts.builder()
+                .claim("category",category)
                 .claim("email", email)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))

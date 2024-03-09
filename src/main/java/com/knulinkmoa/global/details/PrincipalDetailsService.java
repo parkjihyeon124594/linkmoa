@@ -8,6 +8,7 @@ import com.knulinkmoa.domain.member.entity.Member;
 import com.knulinkmoa.domain.member.reposotiry.MemberRepository;
 import com.knulinkmoa.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PrincipalDetailsService implements UserDetailsService, OAuth2UserService {
 
     private final MemberService memberService;
@@ -56,7 +58,7 @@ public class PrincipalDetailsService implements UserDetailsService, OAuth2UserSe
 
         // oAuth2DTO를 통해서, 우리 서비스에서 관리할 member를 saveOrUpdate
 
-        if(!memberService.existMemberByEmail(oAuth2DTO.email())){
+        if(!memberRepository.existsByEmail(oAuth2DTO.email())){
             member = memberService.save(oAuth2DTO.email(),oAuth2DTO.name());
             System.out.println("save member ");
         }

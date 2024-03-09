@@ -46,6 +46,7 @@ public class SecurityConfig{
                         .authorizeHttpRequests((auth) -> auth
                                 .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
+                                .requestMatchers("reissue").permitAll()
                                 .anyRequest().authenticated())
                         .addFilterBefore(new JwtAuthorizationFilter(memberService, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                         .addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
